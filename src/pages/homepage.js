@@ -1,12 +1,41 @@
-import React from "react";
-import { API_KEY } from "../utils/config";
+import React, { useState, useEffect } from "react";
 
-export default function Homepage() {
-	fetch(
-		`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
-	)
-		.then((response) => response.json())
-		.then((json) => console.log(json));
+import { getWeatherData } from "../api/api";
 
-	return <div></div>;
-}
+// The REST API endpoint
+
+const Homepage = () => {
+	// At the beginning, posts is an empty array
+	const [weatherData, setWeatherData] = useState([]);
+
+	// Define the function that fetches the data from API
+	const fetchData = async () => {
+		const { data } = await getWeatherData();
+		setWeatherData(data);
+		console.log(data);
+	};
+
+	// Trigger the fetchData after the initial render by using the useEffect hook
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	return (
+		<div className="wrapper">
+			{weatherData.length > 0 ? (
+				<div className="content">
+					{weatherData.map((data) => (
+						<div className="post">
+							<h2>{data.id}</h2>
+							<p>{data.body}</p>
+						</div>
+					))}
+				</div>
+			) : (
+				<p className="loading">Loading... </p>
+			)}
+		</div>
+	);
+};
+
+export default Homepage;
