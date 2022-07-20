@@ -1,41 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import WeatherCard from "../components/weather";
 
-import { getWeatherData } from "../api/api";
+export default function Homepage() {
+	const [lat, setLat] = useState([]);
+	const [long, setLong] = useState([]);
+	const [data, setData] = useState([]);
 
-// The REST API endpoint
-
-const Homepage = () => {
-	// At the beginning, posts is an empty array
-	const [weatherData, setWeatherData] = useState([]);
-
-	// Define the function that fetches the data from API
-	const fetchData = async () => {
-		const { data } = await getWeatherData();
-		setWeatherData(data);
-		console.log(data);
-	};
-
-	// Trigger the fetchData after the initial render by using the useEffect hook
 	useEffect(() => {
-		fetchData();
-	}, []);
+		const fetchData = async () => {
+			navigator.geolocation.getCurrentPosition(function (postion) {
+				setLat(postion.coords.latitude);
+				setLong(postion.coords.longitude);
+			});
 
+			console.log("Latitute is:", lat);
+			console.log("Longitute is:", long);
+
+			await fetch(
+				`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
+			)
+				.then((res) => res.json())
+				.then((result) => {
+					setData(result);
+					console.log(result);
+				});
+		};
+		fetchData();
+	}, [lat, long]);
 	return (
-		<div className="wrapper">
-			{weatherData.length > 0 ? (
-				<div className="content">
-					{weatherData.map((data) => (
-						<div className="post">
-							<h2>{data.id}</h2>
-							<p>{data.body}</p>
-						</div>
-					))}
-				</div>
+		<div className="App">
+			{typeof data.main != "undefined" ? (
+				<WeatherCard weatherData={data} />
 			) : (
-				<p className="loading">Loading... </p>
+				<div></div>
 			)}
 		</div>
 	);
-};
-
-export default Homepage;
+}
