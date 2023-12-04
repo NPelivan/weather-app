@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import WeatherCard from "../components/weather";
+import Weather from "../components/weather";
+import SearchBar from "../components/searchBar";
 
 export default function Homepage() {
 	const [lat, setLat] = useState([]);
@@ -30,9 +31,12 @@ export default function Homepage() {
 	return (
 		<div className="App">
 			{typeof data.main != "undefined" ? (
-				<WeatherCard weatherData={data} />
+				<div>
+					<SearchBar weatherData={data} />
+					<Weather weatherData={data} />
+				</div>
 			) : (
-				<div></div>
+				<div>Loading...</div>
 			)}
 		</div>
 	);
