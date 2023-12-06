@@ -13,7 +13,7 @@ export default function SearchBar() {
       if (state !== "") {
         try {
           const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${state}&appid=${process.env.REACT_APP_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${state}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
 			);
 			console.log(response);
           if (response.ok) {
