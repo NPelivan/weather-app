@@ -1,10 +1,12 @@
 import React from "react";
 
 export default function Weather({ weatherData }) {
+	const iconUrl = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`;
 	return (
 		<div>
-			<h1>{weatherData.name}</h1>
-			<h2>Country: {weatherData.sys.country}</h2>
+			<h2>{weatherData.name}</h2>
+			<h3>Country: {weatherData.sys.country}</h3>
+			<img src={iconUrl} alt={weatherData.weather[0].description} />
 			<p>Tempererature: {Math.round(weatherData.main.temp)} &deg;C</p>
 			<p>Feels like: {Math.round(weatherData.main.feels_like)} &deg;C</p>
 			<p>Max temperature: {Math.round(weatherData.main.temp_max)} &deg;C</p>

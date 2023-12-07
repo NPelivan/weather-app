@@ -39,6 +39,7 @@ export default function Homepage() {
 
 	return (
 		<div className="App">
+			<h1>Current weather</h1>
 			{data ? (
 				<div>
 					<SearchBar weatherData={data} />

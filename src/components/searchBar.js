@@ -42,6 +42,7 @@ export default function SearchBar() {
 
   return (
     <div>
+      <h1>Current weather</h1>
       <form onSubmit={submitHandler}>
         <input
           type="text"
